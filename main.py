@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, accuracy_score, precision_recall_curve
+from sklearn.metrics import classification_report, accuracy_score, precision_recall_curve, confusion_matrix
 
 df = pd.read_csv('steam_top_games_2026.csv')
 
@@ -69,7 +69,7 @@ sns.histplot(df['ccu_intensity_raw'], bins=50, kde=True, ax=axes[0], color='toma
 axes[0].set_title('Distribution of Raw CCU Intensity', fontsize=14)
 axes[0].set_ylabel('Frequency (Count)')
 sns.histplot(df['ccu_intensity_log'], bins=50, kde=True, ax=axes[1], color='skyblue', edgecolor='black')
-axes[1].set_title('Log-Normal Distribution of Engagement', fontsize=14)
+axes[1].set_title('Log Transformation of Engagement', fontsize=14)
 axes[1].set_ylabel('Frequency (Count)')
 plt.tight_layout()
 
@@ -110,4 +110,15 @@ plt.xlabel('Gini Importance (Reduction in Impurity)', fontsize=11)
 plt.ylabel('Features', fontsize=11)
 plt.tight_layout()
 
-plt.show()
+cm = confusion_matrix(y_test_f, y_pred)
+plt.figure(figsize=(8, 6))
+sns.set_theme(style="white")
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Predicted Non-Hit', 'Predicted Hit'],
+            yticklabels=['Actual Non-Hit', 'Actual Hit'])
+plt.title('Confusion Matrix: Predicting "Overwhelmingly Positive" Customer Reviews', fontsize=14)
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.tight_layout()
+
+plt.show()  
