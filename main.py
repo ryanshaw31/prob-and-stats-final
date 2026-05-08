@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +7,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score, precision_recall_curve, confusion_matrix
 
-df = pd.read_csv('steam_top_games_2026.csv')
+# Last minute fix cause python didnt want to read the csv file
+base_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(base_dir, 'steam_top_games_2026.csv')
+
+df = pd.read_csv(csv_path)
 
 df['total_reviews'] = df['positive_reviews'] + df['negative_reviews']
 df['approval_ratio'] = (df['positive_reviews'] / df['total_reviews']).fillna(0)
